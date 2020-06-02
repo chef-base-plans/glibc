@@ -1,7 +1,7 @@
 plan_origin = ENV["HAB_ORIGIN"]
 plan_name = input("plan_name", value: "glibc")
 plan_ident = "#{plan_origin}/#{plan_name}"
-length = input("length", value: "54")
+length = input("length", value: 50)
 
 hab_pkg_path = command("hab pkg path #{plan_ident}")
 describe hab_pkg_path do
@@ -22,8 +22,11 @@ describe get_binutils do
   its("exit_status") { should eq 0 }
 end
 
+# dl_default_dirname_length is 50 plus the origin name
+length = length + plan_origin.length
+
 dl_default_dirname_length_check = command("readelf -s \"#{target_file}\" | grep -E \"_nl_default_dirname\" | awk '{ print $3 }' | tail -n1")
 describe dl_default_dirname_length_check do
   its("exit_status") { should eq 0 }
-  its("stdout.strip") { should eq length }
+  its("stdout.strip.to_i") { should eq length }
 end
