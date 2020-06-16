@@ -28,6 +28,7 @@ pkg_build_deps=(
   core/perl
   core/m4
   core/python-minimal
+  core/tzdata
 )
 pkg_bin_dirs=(bin)
 pkg_include_dirs=(include)
@@ -304,28 +305,10 @@ EOF
     # Install timezone data.
     # We set --sysconfdir=$pkg_prefix/etc during our build, so we need to
     # embed timezone data in this package.
-    #
-    # zic /dev/null creates posix timezones without leapseconds
-    # zic leapseconds creates right timezones with leapseconds
-    # zic -d "$ZONEINFO" creates  posixrules file. We use New York because POSIX
-    #   requires the daylight savings time rules to be in accordance with US rules.
+    # Please see core/tzdata for more information.
 
-    extract_src tzdata
-    pushd ./tzdata > /dev/null
-      ZONEINFO="$pkg_prefix/share/zoneinfo"
-      mkdir -p "$ZONEINFO"/{posix,right}
-      for tz in etcetera southamerica northamerica europe africa antarctica \
-          asia australasia backward pacificnew systemv; do
-        zic -L /dev/null -d "$ZONEINFO" ${tz}
-        zic -L /dev/null -d "$ZONEINFO/posix" ${tz}
-        zic -L leapseconds -d "$ZONEINFO/right" ${tz}
-      done
-      cp -v zone.tab zone1970.tab iso3166.tab "$ZONEINFO"
-      zic -d "$ZONEINFO" -p America/New_York
-      unset ZONEINFO
-    popd > /dev/null
-    cp -v "$pkg_prefix/share/zoneinfo/UTC" "$pkg_prefix/etc/localtime"
-  popd > /dev/null
+    cp -r "$(pkg_path_for tzdata)/share/zoneinfo" "$pkg_prefix/share/"
+    cp -v "$(pkg_path_for tzdata)/share/zoneinfo/UTC" "$pkg_prefix/etc/localtime"
 }
 
 do_strip() {
@@ -357,29 +340,6 @@ do_end() {
   if [[ -n "$_clean_pwd" ]]; then
     rm -fv /bin/pwd
   fi
-}
-
-extract_src() {
-  build_dirname=$pkg_dirname/../${pkg_name}-build
-  plan=$1
-
-  (source "$PLAN_CONTEXT/../$plan/plan.sh"
-    # Re-override the defaults as this plan is sourced externally
-    pkg_filename="$(basename $pkg_source)"
-    pkg_dirname="${pkg_name}-${pkg_version}"
-    CACHE_PATH="$HAB_CACHE_SRC_PATH/$pkg_dirname"
-
-    build_line "Downloading $pkg_source"
-    do_download
-    build_line "Verifying $pkg_filename"
-    do_verify
-    build_line "Clean the cache"
-    do_clean
-    build_line "Unpacking $pkg_filename"
-    do_unpack
-    mv -v "$HAB_CACHE_SRC_PATH/$pkg_dirname" \
-      "$HAB_CACHE_SRC_PATH/$build_dirname/$plan"
-  )
 }
 
 
