@@ -1,4 +1,4 @@
-Title 'Tests to ensure correct textdomaindir is set'
+title 'Tests to ensure correct textdomaindir is set'
 
 plan_origin = ENV["HAB_ORIGIN"]
 plan_name = input("plan_name", value: "glibc")
@@ -11,7 +11,7 @@ control 'core-plans-check-textdomaindir' do
   To test the correct textdomaindir has been set, we must first locate the ldd binary and the path to the locale file in the share directory.
   We then search through the ldd binary for the TEXTDOMAINDIR.
   The returned value should equal the /share/locale file.
-    $ grep "TEXTDOMAINDIR" "$PKG_PATH/bin/ldd" | cut -d '=' -f2
+    $ grep "TEXTDOMAINDIR" "$PKG_PATH/bin/ldd" | cut -d \'=\' -f2
     $PKG_PATH/share/locale
   '
 

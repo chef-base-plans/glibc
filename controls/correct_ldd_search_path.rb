@@ -11,7 +11,7 @@ control 'core-plans-check-ldd-search-path' do
   To test the correct ldd search path has been set, we must first locate the ldd binary and the path to the ld-linux.so.2 file in the lib directory.
   We then search through the ldd binary for the RTLDLIST.
   The first returned value should equal the /lib/ld-linux.so.2 value
-    $ grep "^RTLDLIST=" "$PKG_PATH/bin/ldd" | cut -d '"' -f2 | cut -d ' ' -f1
+    $ grep "^RTLDLIST=" "$PKG_PATH/bin/ldd" | cut -d \'"\' -f2 | cut -d \' \' -f1
     $PKG_PATH/lib/ld-linux.so.2
   '
 
