@@ -12,7 +12,7 @@ control 'core-plans-check-abi-version' do
   To test the correct abi version has been installed we check for the location of the libc.so file.
   We then install core/binutils so that we can use readelf to display information about the libc.so file.
   The returned value should equal the abi_version we set in our input file.
-    $ readelf -n "TARGET_FILE" | grep "OS: Linux, ABI:" | awk '{ print $4 }'
+    $ readelf -n "TARGET_FILE" | grep "OS: Linux, ABI:" | awk \'{ print $4 }\'
     3.2.0
   '
 
@@ -32,9 +32,9 @@ control 'core-plans-check-abi-version' do
 
   target_file = File.join(hab_pkg_path.stdout.strip, "lib/libc-#{glibc_version.stdout.strip}.so")
 
-  get_binutils = command("hab pkg install core/binutils --binlink")
+  get_binutils = command("hab pkg install core/binutils --binlink --force")
   describe get_binutils do
-    its("stdout") { should match /Installing core/binutils/ }
+    its("stdout") { should match /Installing core\/binutils/ }
     its("stdout") { should match /Binlinked readelf/ }
     its("stderr") { should be_empty}
     its("exit_status") { should eq 0 }

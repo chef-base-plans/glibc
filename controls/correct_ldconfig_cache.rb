@@ -11,7 +11,7 @@ control 'core-plans-check-ld-config' do
   To test the ld-config only contains this package, we first have to locate the ldconfig executable.
   We then use this executable to print the cache, so that it can be checked.
   The returned value should contain the libutil.so.1 file that was built with the current package.
-    $ PKG_PATH/bin/ldconfig --print-cache | tail -n +1 | awk '{ print $8 }'
+    $ PKG_PATH/bin/ldconfig --print-cache | tail -n +1 | awk "{ print $8 }"
     PKG_PATH/lib/libutil.so.1
     ...  
   '
