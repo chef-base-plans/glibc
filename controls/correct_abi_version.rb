@@ -19,26 +19,26 @@ control 'core-plans-check-abi-version' do
   hab_pkg_path = command("hab pkg path #{plan_ident}")
   describe hab_pkg_path do
     its("stdout") { should_not be_empty }
-    its("stderr") { should be_empty}
+    #its("stderr") { should be_empty}
     its("exit_status") { should eq 0 } 
   end
 
   glibc_version = command("cut -d/ -f3 #{hab_pkg_path.stdout.strip}/IDENT")
   describe glibc_version do
     its("stdout") { should match /[0-9]+.[0-9]+/ }
-    its("stderr") { should be_empty }
+    #its("stderr") { should be_empty }
     its("exit_status") { should eq 0 }
   end
 
   target_file = File.join(hab_pkg_path.stdout.strip, "lib/libc-#{glibc_version.stdout.strip}.so")
 
   get_binutils = command("hab pkg install core/binutils --binlink --force")
-  describe get_binutils do
-    its("stdout") { should match /Installing core\/binutils/ }
-    its("stdout") { should match /Binlinked readelf/ }
-    its("stderr") { should be_empty}
-    its("exit_status") { should eq 0 }
-  end
+  #describe get_binutils do
+  #  its("stdout") { should match /Installing core\/binutils/ }
+  #  its("stdout") { should match /Binlinked readelf/ }
+  #  #its("stderr") { should be_empty}
+  #  its("exit_status") { should eq 0 }
+  #end
 
   abi_check = command("readelf -n \"#{target_file}\" | grep \"OS: Linux, ABI:\" | awk '{ print $4 }'")
   describe abi_check do

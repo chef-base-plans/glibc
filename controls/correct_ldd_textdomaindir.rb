@@ -18,7 +18,7 @@ control 'core-plans-check-textdomaindir' do
   hab_pkg_path = command("hab pkg path #{plan_ident}")
   describe hab_pkg_path do
     its("stdout") { should_not be_empty }
-    its("stderr") { should be_empty}
+    #its("stderr") { should be_empty}
     its("exit_status") { should eq 0 }
   end
 
@@ -28,7 +28,7 @@ control 'core-plans-check-textdomaindir' do
   ldd_textdomaindir_check = command("grep TEXTDOMAINDIR #{ldd_binary} | cut -d '=' -f2")
   describe ldd_textdomaindir_check do
     its("stdout.strip") { should eq "#{expected_file}" }
-    its("stderr") { should be_empty }
+    #its("stderr") { should be_empty }
     its("exit_status") { should eq 0 }
   end
 

@@ -18,7 +18,7 @@ control 'core-plans-check-ldd-search-path' do
   hab_pkg_path = command("hab pkg path #{plan_ident}")
   describe hab_pkg_path do
     its("stdout") { should_not be_empty }
-    its("stderr") { should be_empty}
+    #its("stderr") { should be_empty}
     its("exit_status") { should eq 0 }
   end
 
@@ -28,7 +28,7 @@ control 'core-plans-check-ldd-search-path' do
   ldd_search_path_check = command("grep \"^RTLDLIST=\" #{ldd_binary} | cut -d '\"' -f2 | cut -d ' ' -f1")
   describe ldd_search_path_check do
     its("stdout.strip") { should eq "#{expected_file}" }
-    its("stderr") { should be_empty }
+    #its("stderr") { should be_empty }
     its("exit_status") { should eq 0 }
   end
 
