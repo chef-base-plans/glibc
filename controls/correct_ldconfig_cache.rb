@@ -19,7 +19,7 @@ control 'core-plans-check-ld-config' do
   hab_pkg_path = command("hab pkg path #{plan_ident}")
   describe hab_pkg_path do
     its("stdout") { should_not be_empty }
-    its("stderr") { should be_empty }
+    #its("stderr") { should be_empty }
     its("exit_status") { should eq 0 }
   end
 
@@ -28,13 +28,13 @@ control 'core-plans-check-ld-config' do
   ldconfig_check = command("#{ldconfig_binary} --print-cache | tail -n +1 | awk '{ print $8 }'")
   describe ldconfig_check do
     its("stdout") { should_not be_empty }
-    its("stderr") { should be_empty}
+    #its("stderr") { should be_empty}
     its("exit_status") { should eq 0}
 
     for line in ldconfig_check.stdout.split()
       describe command("echo #{line} | cut -d/ -f1-7") do
         its("stdout.strip") { should eq "#{hab_pkg_path.stdout.strip}" }
-        its("stderr") { should be_empty }
+        #its("stderr") { should be_empty }
         its("exit_status") { should eq 0 }
       end
     end
