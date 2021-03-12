@@ -1,6 +1,6 @@
 pkg_name=glibc
 pkg_origin=core
-pkg_version=2.29
+pkg_version=2.33
 pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 pkg_description="\
 The GNU C Library project provides the core libraries for the GNU system and \
@@ -13,7 +13,7 @@ dlopen, pthread_create, crypt, login, exit and more.\
 pkg_upstream_url="https://www.gnu.org/software/libc"
 pkg_license=('GPL-2.0-or-later' 'LGPL-2.1-or-later')
 pkg_source="http://ftp.gnu.org/gnu/$pkg_name/${pkg_name}-${pkg_version}.tar.xz"
-pkg_shasum="f3eeb8d57e25ca9fc13c2af3dae97754f9f643bc69229546828e3a240e2af04b"
+pkg_shasum="2e2556000e105dbd57f0b6b2a32ff2cf173bde4f0d85dffccfd8b7e51a0677ff"
 pkg_deps=(
   core/linux-headers
 )
