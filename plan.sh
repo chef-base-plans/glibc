@@ -70,10 +70,15 @@ do_prepare() {
   # depending on any bootstrapped version.
   echo "LDFLAGS-nscd += -static-libgcc" >> nscd/Makefile
 
-  # Have `rpcgen(1)` look for `cpp(1)` in `$PATH`.
-
   # Don't use the system's `/etc/ld.so.cache` and `/etc/ld.so.preload`, but
   # rather the version under `$pkg_prefix/etc`.
+  #
+  # Thanks to https://github.com/NixOS/nixpkgs/blob/54fc2db/pkgs/development/libraries/glibc/dont-use-system-ld-so-cache.patch
+  # and to https://github.com/NixOS/nixpkgs/blob/dac591a/pkgs/development/libraries/glibc/dont-use-system-ld-so-preload.patch
+  # shellcheck disable=SC2002
+  cat "$PLAN_CONTEXT/dont-use-system-ld-so.patch" \
+    | sed "s,@prefix@,$pkg_prefix,g" \
+    | patch -p1
 
   # Adjust `scripts/test-installation.pl` to use our new dynamic linker
   sed -i "s|libs -o|libs -L${pkg_prefix}/lib -Wl,-dynamic-linker=${dynamic_linker} -o|" \
