@@ -116,6 +116,7 @@ do_build() {
       --sysconfdir="$pkg_prefix/etc" \
       --enable-obsolete-rpc \
       --disable-profile \
+      --disable-werror \
       --enable-kernel=2.6.32 \
       --cache-file=config.cache
 
@@ -303,7 +304,7 @@ EOF
       ZONEINFO="$pkg_prefix/share/zoneinfo"
       mkdir -p "$ZONEINFO"/{posix,right}
       for tz in etcetera southamerica northamerica europe africa antarctica \
-          asia australasia backward pacificnew systemv; do
+          asia australasia backward factory; do
         zic -L /dev/null -d "$ZONEINFO" -y "sh yearistype.sh" ${tz}
         zic -L /dev/null -d "$ZONEINFO/posix" -y "sh yearistype.sh" ${tz}
         zic -L leapseconds -d "$ZONEINFO/right" -y "sh yearistype.sh" ${tz}

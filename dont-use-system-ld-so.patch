@@ -1,7 +1,7 @@
-diff -ru glibc-2.27.orig/elf/Makefile glibc-2.27/elf/Makefile
---- glibc-2.27.orig/elf/Makefile	2018-03-10 00:45:56.360267338 +0000
-+++ glibc-2.27/elf/Makefile	2018-03-10 00:51:31.347282256 +0000
-@@ -559,13 +559,13 @@
+diff -ru glibc-2.33.orig/elf/Makefile glibc-2.33/elf/Makefile
+--- glibc-2.33.orig/elf/Makefile	2018-03-10 00:45:56.360267338 +0000
++++ glibc-2.33/elf/Makefile	2018-03-10 00:51:31.347282256 +0000
+@@ -669,14 +669,14 @@
  
  $(objpfx)ldconfig: $(ldconfig-modules:%=$(objpfx)%.o)
  
@@ -14,15 +14,18 @@ diff -ru glibc-2.27.orig/elf/Makefile glibc-2.27/elf/Makefile
 -CFLAGS-dl-cache.c += $(SYSCONF-FLAGS)
 -CFLAGS-cache.c += $(SYSCONF-FLAGS)
 -CFLAGS-rtld.c += $(SYSCONF-FLAGS)
+-CFLAGS-dl-usage.c += $(SYSCONF-FLAGS) \
 +CFLAGS-dl-cache.c += $(PREFIX-FLAGS)
 +CFLAGS-cache.c += $(PREFIX-FLAGS)
 +CFLAGS-rtld.c += $(PREFIX-FLAGS)
++CFLAGS-dl-usage.c += $(PREFIX-FLAGS) \
+   -D'RTLD="$(rtlddir)/$(rtld-installed-name)"'
  
  cpp-srcs-left := $(all-rtld-routines:=.os)
- lib := rtld
-diff -ru glibc-2.27.orig/elf/ldconfig.c glibc-2.27/elf/ldconfig.c
---- glibc-2.27.orig/elf/ldconfig.c	2018-03-10 00:45:56.360267338 +0000
-+++ glibc-2.27/elf/ldconfig.c	2018-03-10 00:48:40.345813247 +0000
+
+diff -ru glibc-2.33.orig/elf/ldconfig.c glibc-2.33/elf/ldconfig.c
+--- glibc-2.33.orig/elf/ldconfig.c	2018-03-10 00:45:56.360267338 +0000
++++ glibc-2.33/elf/ldconfig.c	2018-03-10 00:48:40.345813247 +0000
 @@ -51,7 +51,7 @@
  #endif
  
@@ -32,9 +35,9 @@ diff -ru glibc-2.27.orig/elf/ldconfig.c glibc-2.27/elf/ldconfig.c
  #endif
  
  /* Get libc version number.  */
-diff -ru glibc-2.27.orig/elf/rtld.c glibc-2.27/elf/rtld.c
---- glibc-2.27.orig/elf/rtld.c	2018-03-10 00:45:56.364267278 +0000
-+++ glibc-2.27/elf/rtld.c	2018-03-10 00:52:35.054344944 +0000
+diff -ru glibc-2.33.orig/elf/rtld.c glibc-2.33/elf/rtld.c
+--- glibc-2.33.orig/elf/rtld.c	2018-03-10 00:45:56.364267278 +0000
++++ glibc-2.33/elf/rtld.c	2018-03-10 00:52:35.054344944 +0000
 @@ -1625,7 +1625,7 @@
       open().  So we do this first.  If it succeeds we do almost twice
       the work but this does not matter, since it is not for production
@@ -44,9 +47,9 @@ diff -ru glibc-2.27.orig/elf/rtld.c glibc-2.27/elf/rtld.c
    if (__glibc_unlikely (__access (preload_file, R_OK) == 0))
      {
        /* Read the contents of the file.  */
-diff -ru glibc-2.27.orig/sysdeps/generic/dl-cache.h glibc-2.27/sysdeps/generic/dl-cache.h
---- glibc-2.27.orig/sysdeps/generic/dl-cache.h	2018-03-10 00:45:56.568264197 +0000
-+++ glibc-2.27/sysdeps/generic/dl-cache.h	2018-03-10 00:53:07.405869963 +0000
+diff -ru glibc-2.33.orig/sysdeps/generic/dl-cache.h glibc-2.33/sysdeps/generic/dl-cache.h
+--- glibc-2.33.orig/sysdeps/generic/dl-cache.h	2018-03-10 00:45:56.568264197 +0000
++++ glibc-2.33/sysdeps/generic/dl-cache.h	2018-03-10 00:53:07.405869963 +0000
 @@ -28,7 +28,7 @@
  #endif
  

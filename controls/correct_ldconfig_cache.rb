@@ -1,4 +1,4 @@
-title 'Tests to confirm ldconfig cache only contains this package' 
+title 'Tests to confirm ldconfig cache only contains this package'
 
 plan_origin = ENV["HAB_ORIGIN"]
 plan_name = input("plan_name", value: "glibc")
@@ -13,7 +13,7 @@ control 'core-plans-check-ld-config' do
   The returned value should contain the libutil.so.1 file that was built with the current package.
     $ PKG_PATH/bin/ldconfig --print-cache | tail -n +1 | awk "{ print $8 }"
     PKG_PATH/lib/libutil.so.1
-    ...  
+    ...
   '
 
   hab_pkg_path = command("hab pkg path #{plan_ident}")
@@ -25,7 +25,7 @@ control 'core-plans-check-ld-config' do
 
   ldconfig_binary = File.join(hab_pkg_path.stdout.strip, "/bin/ldconfig")
 
-  ldconfig_check = command("#{ldconfig_binary} --print-cache | tail -n +1 | awk '{ print $8 }'")
+  ldconfig_check = command("#{ldconfig_binary} --print-cache | head -n -1 | tail -n +1 | awk '{ print $8 }'")
   describe ldconfig_check do
     its("stdout") { should_not be_empty }
     #its("stderr") { should be_empty}
