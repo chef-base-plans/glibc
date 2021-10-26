@@ -30,7 +30,11 @@ control 'core-plans-check-abi-version' do
     its("exit_status") { should eq 0 }
   end
 
-  target_file = File.join(hab_pkg_path.stdout.strip, "lib/libc-#{glibc_version.stdout.strip}.so")
+	# Starting with glibc 2.34, the shared objects are installed under their
+	# ABI sonames directly, without symbolic links.  This increases
+	# compatibility with distribution package managers that delete removed
+	# files late during the package upgrade or downgrade process
+	target_file = File.join(hab_pkg_path.stdout.strip, "lib/libc.so.6")
 
   get_binutils = command("hab pkg install core/binutils --binlink --force")
   #describe get_binutils do
